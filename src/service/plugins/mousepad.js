@@ -97,7 +97,7 @@ var Plugin = new Lang.Class({
     },
 
     clickPointer: function (button) {
-        debug("Mousepad: clickPointer(" + button + ", " + double + ")");
+        debug("Mousepad: clickPointer(" + button + ")");
 
         let event = "b%dc".format(button);
 
@@ -162,7 +162,9 @@ var Plugin = new Lang.Class({
         debug("Mousepad: pressKey(" + key + ")");
 
         try {
-            Atspi.generate_keyboard_event(0, key, Atspi.KeySynthType.STRING);
+            if ( !Atspi.generate_keyboard_event(0, key, Atspi.KeySynthType.STRING) ) {
+                throw Error("Unknown/invalid key");
+            };
         } catch (e) {
             log("Mousepad: Error simulating keypress: " + e);
         }
